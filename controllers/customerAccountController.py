@@ -16,3 +16,12 @@ def create_customer_account():
 def get_all():
     all_customers_accounts = customerAccountService.get_all()
     return customers_account_schema.jsonify(all_customers_accounts), 200
+
+def update_credentials(account_id):
+    try:
+        new_data = customer_account_schema.load(request.json, partial=True)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+
+    response, status = customerAccountService.update_credentials(account_id, new_data)
+    return jsonify(response), status

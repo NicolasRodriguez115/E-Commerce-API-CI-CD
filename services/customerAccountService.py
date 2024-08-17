@@ -18,3 +18,22 @@ def get_all():
     query = select(CustomerAccount)
     all_customers_accounts = db.session.execute(query).scalars().all()
     return all_customers_accounts
+
+def update_credentials(account_id, new_data):
+    account = db.session.query(CustomerAccount).filter_by(customer_id=account_id).first()
+
+    if not account:
+        return {'error': 'Account not found'}, 404
+    
+    if 'username' in new_data:
+        account.username = new_data['username']
+    if 'password' in new_data:
+        account.password = new_data['password']
+
+    try:
+        db.session.commit()
+        return {'message': 'Account credentials updated succesfully'}, 200
+    except Exception as e:
+        db.session.rollback()
+        return {'error': str(e)}, 500
+    
