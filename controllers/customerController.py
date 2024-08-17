@@ -16,6 +16,12 @@ def get_all():
     all_customers = customerService.get_all()
     return customers_schema.jsonify(all_customers), 200
 
+def get_by_id(customer_id):
+    response, status = customerService.get_by_id(customer_id)
+    if status == 404:
+        return jsonify(response), status
+    return customer_schema.jsonify(response), status
+
 def update_customer(customer_id):
     try:
         new_data = customer_schema.load(request.json, partial=True)

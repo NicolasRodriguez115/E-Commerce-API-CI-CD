@@ -19,6 +19,14 @@ def get_all():
     all_customers = db.session.execute(query).scalars().all()
     return all_customers
 
+def get_by_id(customer_id):
+    query = select(Customer).where(Customer.id == customer_id)
+    customer = db.session.execute(query).scalars().first()
+    if customer is None:
+        return {'message': 'Customer not found'}, 404
+    return customer, 200
+
+
 def update_customer(customer_id, new_data):
 
     customer = db.session.query(Customer).filter_by(id=customer_id).first()

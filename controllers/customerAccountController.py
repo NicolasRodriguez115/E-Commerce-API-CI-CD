@@ -17,6 +17,12 @@ def get_all():
     all_customers_accounts = customerAccountService.get_all()
     return customers_account_schema.jsonify(all_customers_accounts), 200
 
+def get_by_id(customer_id):
+    response, status = customerAccountService.get_by_id(customer_id)
+    if status == 404:
+        return jsonify(response), status
+    return customer_account_schema.jsonify(response), status
+
 def update_credentials(account_id):
     try:
         new_data = customer_account_schema.load(request.json, partial=True)
