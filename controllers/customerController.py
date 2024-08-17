@@ -12,5 +12,7 @@ def create_customer():
     customer_saved = customerService.create_customer(customer_data)
     return customer_schema.jsonify(customer_saved), 201
 
-
+def get_all():
+    all_customers = customerService.get_all()
+    return customers_schema.jsonify(all_customers), 200
     

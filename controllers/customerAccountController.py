@@ -13,4 +13,6 @@ def create_customer_account():
     return customer_account_schema.jsonify(account_saved), 201
 
 
-    
+def get_all():
+    all_customers_accounts = customerAccountService.get_all()
+    return customers_account_schema.jsonify(all_customers_accounts), 200

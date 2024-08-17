@@ -14,3 +14,7 @@ def create_customer_account(customer_credentials):
     db.session.refresh(new_account)
     return new_account
 
+def get_all():
+    query = select(CustomerAccount)
+    all_customers_accounts = db.session.execute(query).scalars().all()
+    return all_customers_accounts

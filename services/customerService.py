@@ -14,3 +14,7 @@ def create_customer(customer_data):
     db.session.refresh(new_customer)
     return new_customer
 
+def get_all():
+    query = select(Customer)
+    all_customers = db.session.execute(query).scalars().all()
+    return all_customers
