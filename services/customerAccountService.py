@@ -1,6 +1,7 @@
 from database import db
 from models.customerAccount import CustomerAccount
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 
 def create_customer_account(customer_credentials):
     new_account = CustomerAccount(
@@ -20,7 +21,7 @@ def get_all():
     return all_customers_accounts
 
 def get_by_id(customer_id):
-    query = select(CustomerAccount).where(CustomerAccount.customer_id == customer_id)
+    query = select(CustomerAccount).where(CustomerAccount.customer_id == customer_id).options(joinedload(CustomerAccount.customer))
     account = db.session.execute(query).scalars().first()
     if account is None:
         return {'message': 'Account not found'}, 404
