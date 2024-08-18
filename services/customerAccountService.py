@@ -27,6 +27,15 @@ def get_by_id(customer_id):
         return {'message': 'Account not found'}, 404
     return account, 200
 
+def delete_by_id(customer_id):
+    query = select(CustomerAccount).where(CustomerAccount.customer_id == customer_id)
+    account = db.session.execute(query).scalars().first()
+    if account is None:
+        return {'message': 'Account not found'}, 404
+
+    db.session.delete(account)
+    db.session.commit()
+    return {'message': 'Account deleted succesfully'}, 200
 
 def update_credentials(account_id, new_data):
     account = db.session.query(CustomerAccount).filter_by(customer_id=account_id).first()

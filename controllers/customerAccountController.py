@@ -23,6 +23,12 @@ def get_by_id(customer_id):
         return jsonify(response), status
     return customer_account_schema.jsonify(response), status
 
+def delete_by_id(customer_id):
+    response, status = customerAccountService.delete_by_id(customer_id)
+    if status == 404:
+        return jsonify(response), status
+    return jsonify(response), status
+
 def update_credentials(account_id):
     try:
         new_data = customer_account_schema.load(request.json, partial=True)

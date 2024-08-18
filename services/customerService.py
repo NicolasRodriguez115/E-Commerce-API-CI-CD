@@ -26,6 +26,15 @@ def get_by_id(customer_id):
         return {'message': 'Customer not found'}, 404
     return customer, 200
 
+def delete_by_id(customer_id):
+    query = select(Customer).where(Customer.id == customer_id)
+    customer = db.session.execute(query).scalars().first()
+    if customer is None:
+        return {'message': 'Customer not found'}, 404
+    
+    db.session.delete(customer)
+    db.session.commit()
+    return {'message': 'Customer deleted succesfully'}, 200
 
 def update_customer(customer_id, new_data):
 
