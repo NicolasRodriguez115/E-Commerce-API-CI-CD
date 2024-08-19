@@ -7,6 +7,7 @@ from models.customerAccount import CustomerAccount
 
 from routes.customerBP import customer_blueprint
 from routes.customerAccountBP import customer_account_blueprint
+from routes.productBP import product_blueprint
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -20,6 +21,7 @@ def create_app(config_name):
 def blueprint_config(app):
     app.register_blueprint(customer_blueprint, url_prefix='/customers')
     app.register_blueprint(customer_account_blueprint, url_prefix='/customers_account')
+    app.register_blueprint(product_blueprint, url_prefix='/products')
 
 if __name__ == '__main__':
     app = create_app('DevelopmentConfig')
