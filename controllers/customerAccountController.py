@@ -2,6 +2,7 @@ from flask import request, jsonify
 from models.schemas.customerAccountSchema import customer_account_schema, customers_account_schema
 from services import customerAccountService
 from marshmallow import ValidationError
+from caching import cache
 
 def create_customer_account():
     try:
@@ -12,11 +13,12 @@ def create_customer_account():
     account_saved = customerAccountService.create_customer_account(account_data)
     return customer_account_schema.jsonify(account_saved), 201
 
-
+@cache.cached(timeout=60)
 def get_all():
     all_customers_accounts = customerAccountService.get_all()
     return customers_account_schema.jsonify(all_customers_accounts), 200
 
+@cache.cached(timeout=60)
 def get_by_id(customer_id):
     response, status = customerAccountService.get_by_id(customer_id)
     if status == 404:

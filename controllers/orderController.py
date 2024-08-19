@@ -2,6 +2,7 @@ from flask import request, jsonify
 from models.schemas.orderSchema import order_schema, orders_schema
 from services import orderService
 from marshmallow import ValidationError
+from caching import cache
 
 def create_order():
     try:
@@ -12,6 +13,7 @@ def create_order():
     new_order = orderService.create_order(order_data)
     return order_schema.jsonify(new_order), 201
 
+@cache.cached(timeout=60)
 def get_by_id(order_id):
     response, status = orderService.get_by_id(order_id)
     if status == 404:

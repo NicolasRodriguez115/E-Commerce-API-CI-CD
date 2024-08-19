@@ -2,6 +2,7 @@ from flask import request, jsonify
 from models.schemas.productSchema import product_schema, products_schema
 from services import productService
 from marshmallow import ValidationError
+from caching import cache
 
 def create_product():
     try:
@@ -12,10 +13,12 @@ def create_product():
     product_saved = productService.create_product(product_data)
     return product_schema.jsonify(product_saved), 201
 
+@cache.cached(timeout=60)
 def get_all():
     all_products = productService.get_all()
     return products_schema.jsonify(all_products), 200
 
+@cache.cached(timeout=60)
 def get_by_id(product_id):
     response, status = productService.get_by_id(product_id)
     if status == 404:
