@@ -12,3 +12,8 @@ def create_order():
     new_order = orderService.create_order(order_data)
     return order_schema.jsonify(new_order), 201
 
+def get_by_id(order_id):
+    response, status = orderService.get_by_id(order_id)
+    if status == 404:
+        return jsonify(response), status
+    return order_schema.jsonify(response), status

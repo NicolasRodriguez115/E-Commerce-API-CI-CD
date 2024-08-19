@@ -37,9 +37,9 @@ def create_order(order_data):
 
     return new_order
 
-        
-
-    
-
 def get_by_id(order_id):
-    pass
+    query = select(Order).where(Order.id == order_id)
+    order = db.session.execute(query).scalars().first()
+    if order is None:
+        return {'message': 'Order not found'}, 404
+    return order, 200
