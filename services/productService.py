@@ -15,4 +15,13 @@ def create_product(product_data):
     return new_product
 
 def get_all():
-    pass
+    query = select(Product)
+    all_products = db.session.execute(query).scalars().all()
+    return all_products
+
+def get_by_id(product_id):
+    query = select(Product).where(Product.id == product_id)
+    product = db.session.execute(query).scalars().first()
+    if product is None:
+        return {'message': 'Product not found'}, 404
+    return product, 200
