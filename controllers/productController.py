@@ -21,3 +21,12 @@ def get_by_id(product_id):
     if status == 404:
         return jsonify(response), status
     return product_schema.jsonify(response), status
+
+def update_product(product_id):
+    try:
+        new_data = product_schema.load(request.json, partial=True)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+    
+    response, status = productService.update_product(product_id, new_data)
+    return jsonify(response), status

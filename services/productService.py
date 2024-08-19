@@ -25,3 +25,23 @@ def get_by_id(product_id):
     if product is None:
         return {'message': 'Product not found'}, 404
     return product, 200
+
+def update_product(product_id, new_data):
+    product = db.session.query(Product).filter_by(id=product_id).first()
+
+    if not product:
+        return {'error': 'Product not found'}, 400
+    
+    if 'name' in new_data:
+        product.name = new_data['name']
+    if 'email' in new_data:
+        product.price = new_data['price']
+    if 'phone' in new_data:
+        product.details = new_data['details']
+
+    try:
+        db.session.commit()
+        return {'message': 'Product updated succesfully'}, 200
+    except Exception as e:
+        db.session.rollback()
+        return {'error': str(e)}, 500
