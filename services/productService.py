@@ -30,7 +30,7 @@ def update_product(product_id, new_data):
     product = db.session.query(Product).filter_by(id=product_id).first()
 
     if not product:
-        return {'error': 'Product not found'}, 400
+        return {'error': 'Product not found'}, 404
     
     if 'name' in new_data:
         product.name = new_data['name']

@@ -8,3 +8,4 @@ class Product(Base):
     name: Mapped[str] = mapped_column(db.String(255), nullable=False)
     price: Mapped[float] = mapped_column(db.Float, nullable=False)
     details: Mapped[str] = mapped_column(db.String(300), nullable=True)
+    orders: Mapped[List['Order']] = db.relationship(secondary='order_product_association', back_populates='products')

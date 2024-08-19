@@ -21,4 +21,5 @@ customers_schema = CustomerSchema(many=True)
 class CustomerOrderSchema(ma.Schema):
     name = fields.String(required=True)
     email = fields.Email(required=True)
+    phone = fields.String(required=True)
     
