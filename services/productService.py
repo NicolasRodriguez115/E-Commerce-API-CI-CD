@@ -45,3 +45,13 @@ def update_product(product_id, new_data):
     except Exception as e:
         db.session.rollback()
         return {'error': str(e)}, 500
+    
+def delete_by_id(product_id):
+    query = select(Product).where(Product.id == product_id)
+    product = db.session.execute(query).scalars().first()
+    if product is None:
+        return {'message': 'Product not found'}, 404
+    
+    db.session.delete(product)
+    db.session.commit()
+    return {'message': 'Product deleted succesfully'}, 200

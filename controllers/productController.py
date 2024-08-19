@@ -30,3 +30,9 @@ def update_product(product_id):
     
     response, status = productService.update_product(product_id, new_data)
     return jsonify(response), status
+
+def delete_by_id(product_id):
+    response, status = productService.delete_by_id(product_id)
+    if status == 404:
+        return jsonify(response), status
+    return jsonify(response), status
