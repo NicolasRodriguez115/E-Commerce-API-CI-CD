@@ -9,3 +9,4 @@ class CustomerAccount(Base):
     username: Mapped[str] = mapped_column(db.String(255), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(db.String(255), nullable=False)
     customer: Mapped['Customer'] = relationship('Customer', back_populates='account')
+    role: Mapped[str] = mapped_column(db.String(10), nullable=False, default='user')

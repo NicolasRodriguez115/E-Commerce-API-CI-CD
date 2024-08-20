@@ -2,12 +2,34 @@ from database import db
 from models.customerAccount import CustomerAccount
 from sqlalchemy import select
 # from sqlalchemy.orm import joinedload
+from utils.util import generate_token
+
+def login(username, password):
+    query = select(CustomerAccount).where(CustomerAccount.username == username)
+    customer_account = db.session.execute(query).scalar_one_or_none()
+
+    if customer_account and customer_account.password == password:
+        token = generate_token(customer_account.customer_id, customer_account.role)
+
+        response = {
+            'status': 'succes',
+            'message': 'Succesfully Logged in',
+            'token': token
+        }
+        return response
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'invalid username or password'
+        }
+        return response
 
 def create_customer_account(customer_credentials):
     new_account = CustomerAccount(
         customer_id=customer_credentials['customer_id'],
         username=customer_credentials['username'],
-        password=customer_credentials['password']
+        password=customer_credentials['password'],
+        role=customer_credentials.get('role', 'user')
     ) 
     db.session.add(new_account)
     db.session.commit()

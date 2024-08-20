@@ -7,6 +7,7 @@ class CustomerAccountSchema(ma.Schema):
     password = fields.String(required=True)
     customer_id = fields.Integer(required=True)
     customer = fields.Nested('CustomerSchema', dump_only=True)
+    role = fields.String(required=False)
 
     @post_dump
     def remove_customer_id(self, data, **kwargs):

@@ -4,6 +4,19 @@ from services import customerAccountService
 from marshmallow import ValidationError
 from caching import cache
 
+
+def login():
+    try:
+        credentials = request.json
+        token = customerAccountService.login(credentials['username'], credentials['password'])
+    except KeyError:
+        return jsonify({'messages': 'Invalid payload, expecting username and password'}), 401
+    
+    if token: 
+        return jsonify(token), 200
+    else:
+        return jsonify({'messages': 'Invalid username or password'}), 401
+
 def create_customer_account():
     try:
         account_data = customer_account_schema.load(request.json)
