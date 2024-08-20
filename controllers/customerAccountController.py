@@ -3,7 +3,7 @@ from models.schemas.customerAccountSchema import customer_account_schema, custom
 from services import customerAccountService
 from marshmallow import ValidationError
 from caching import cache
-
+from utils.util import token_required, admin_required
 
 def login():
     try:
@@ -17,6 +17,7 @@ def login():
     else:
         return jsonify({'messages': 'Invalid username or password'}), 401
 
+# not using @token_required because if you can't create a customer account beforehand you won't be able to generate the login information and generate a token.
 def create_customer_account():
     try:
         account_data = customer_account_schema.load(request.json)
@@ -26,11 +27,13 @@ def create_customer_account():
     account_saved = customerAccountService.create_customer_account(account_data)
     return customer_account_schema.jsonify(account_saved), 201
 
+@token_required
 @cache.cached(timeout=60)
 def get_all():
     all_customers_accounts = customerAccountService.get_all()
     return customers_account_schema.jsonify(all_customers_accounts), 200
 
+@token_required
 @cache.cached(timeout=60)
 def get_by_id(customer_id):
     response, status = customerAccountService.get_by_id(customer_id)
@@ -38,12 +41,14 @@ def get_by_id(customer_id):
         return jsonify(response), status
     return customer_account_schema.jsonify(response), status
 
+@token_required
 def delete_by_id(customer_id):
     response, status = customerAccountService.delete_by_id(customer_id)
     if status == 404:
         return jsonify(response), status
     return jsonify(response), status
 
+@token_required
 def update_credentials(account_id):
     try:
         new_data = customer_account_schema.load(request.json, partial=True)
