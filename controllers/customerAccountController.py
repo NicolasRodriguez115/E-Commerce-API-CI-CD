@@ -24,16 +24,21 @@ def create_customer_account():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    account_saved = customerAccountService.create_customer_account(account_data)
-    return customer_account_schema.jsonify(account_saved), 201
+    response, status = customerAccountService.create_customer_account(account_data)
+    if status == 404:
+        return jsonify(response), status
+    return customer_account_schema.jsonify(response), status
 
 @token_required
+@admin_required
 @cache.cached(timeout=60)
 def get_all():
     all_customers_accounts = customerAccountService.get_all()
     return customers_account_schema.jsonify(all_customers_accounts), 200
 
+
 @token_required
+@admin_required
 @cache.cached(timeout=60)
 def get_by_id(customer_id):
     response, status = customerAccountService.get_by_id(customer_id)
@@ -42,6 +47,7 @@ def get_by_id(customer_id):
     return customer_account_schema.jsonify(response), status
 
 @token_required
+@admin_required
 def delete_by_id(customer_id):
     response, status = customerAccountService.delete_by_id(customer_id)
     if status == 404:
@@ -49,6 +55,7 @@ def delete_by_id(customer_id):
     return jsonify(response), status
 
 @token_required
+@admin_required
 def update_credentials(account_id):
     try:
         new_data = customer_account_schema.load(request.json, partial=True)

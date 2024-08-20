@@ -16,12 +16,14 @@ def create_customer():
     return customer_schema.jsonify(customer_saved), 201
 
 @token_required
+@admin_required
 @cache.cached(timeout=60)
 def get_all():
     all_customers = customerService.get_all()
     return customers_schema.jsonify(all_customers), 200
 
 @token_required
+@admin_required
 @cache.cached(timeout=60)
 def get_by_id(customer_id):
     response, status = customerService.get_by_id(customer_id)
@@ -30,6 +32,7 @@ def get_by_id(customer_id):
     return customer_schema.jsonify(response), status
 
 @token_required
+@admin_required
 def delete_by_id(customer_id):
     response, status = customerService.delete_by_id(customer_id)
     if status == 404:
@@ -37,6 +40,7 @@ def delete_by_id(customer_id):
     return jsonify(response), status
 
 @token_required
+@admin_required
 def update_customer(customer_id):
     try:
         new_data = customer_schema.load(request.json, partial=True)

@@ -1,5 +1,6 @@
 from database import db
 from models.customerAccount import CustomerAccount
+from models.customer import Customer
 from sqlalchemy import select
 # from sqlalchemy.orm import joinedload
 from utils.util import generate_token
@@ -25,6 +26,11 @@ def login(username, password):
         return response
 
 def create_customer_account(customer_credentials):
+    query = select(Customer).where(Customer.id == customer_credentials['customer_id'])
+    associated_customer = db.session.execute(query).scalar_one_or_none()
+
+    if associated_customer is None:
+        return {'message': "There isn't a customer with that id in the database"}, 404
     new_account = CustomerAccount(
         customer_id=customer_credentials['customer_id'],
         username=customer_credentials['username'],
@@ -35,7 +41,7 @@ def create_customer_account(customer_credentials):
     db.session.commit()
 
     db.session.refresh(new_account)
-    return new_account
+    return new_account, 201
 
 def get_all():
     query = select(CustomerAccount)
