@@ -13,7 +13,7 @@ def login(username, password):
         token = generate_token(customer_account.customer_id, customer_account.role)
 
         response = {
-            'status': 'succes',
+            'status': 'success',
             'message': 'Succesfully Logged in',
             'token': token
         }
