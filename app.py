@@ -2,6 +2,7 @@ from flask import Flask
 from database import db
 from models.schemas import ma
 from caching import cache
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from models.customer import Customer
 from models.customerAccount import CustomerAccount
@@ -13,6 +14,11 @@ from routes.customerBP import customer_blueprint
 from routes.customerAccountBP import customer_account_blueprint
 from routes.productBP import product_blueprint
 from routes.orderBP import order_blueprint
+
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.yaml'
+
+swagger_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name':"E-commerce API"})
 
 def create_app(config_name):
     app = Flask(__name__)
