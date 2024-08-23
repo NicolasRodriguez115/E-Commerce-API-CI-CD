@@ -12,4 +12,3 @@ class Customer(Base):
     account: Mapped["CustomerAccount"] = relationship("CustomerAccount", back_populates="customer", cascade='all, delete-orphan', uselist=False)
     orders: Mapped[List["Order"]] = db.relationship(back_populates="customer", lazy='dynamic')
 
-    
