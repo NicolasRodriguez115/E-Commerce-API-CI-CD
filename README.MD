@@ -764,3 +764,6 @@ The  `Customer`  model represents a customer in the database. It includes fields
 }
 ```
 **Note:**  The  `customer_id`  field is removed from the output after serialization using the  `@post_dump`  method.
+
+## URL for swagger documentation:
+https://e-commerce-api-ci-cd-qzcw.onrender.com/api/docs/
