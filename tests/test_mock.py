@@ -9,7 +9,7 @@ fake = Faker()
 class TestLoginCustomer(unittest.TestCase):
     def setUp(self):
             app = create_app('DevelopmentConfig')
-            blueprint_config(app)
+            # blueprint_config(app)
             app.config['TESTING'] = True
             self.app = app.test_client()
             
@@ -56,7 +56,7 @@ class TestCustomer(unittest.TestCase):
 
     def setUp(self):
         app = create_app('DevelopmentConfig')
-        blueprint_config(app)
+        # blueprint_config(app)
         app.config['TESTING'] = True
         self.app = app.test_client()
     @patch('services.customerService.create_customer')
