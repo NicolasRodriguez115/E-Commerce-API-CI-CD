@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from database import db
 from models.schemas import ma
 from caching import cache
@@ -27,7 +28,10 @@ def create_app(config_name):
     db.init_app(app)
     ma.init_app(app)
     cache.init_app(app)
-    app.register_blueprint(swagger_blueprint, url_prefix=SWAGGER_URL)
+    CORS(app)
+
+    blueprint_config(app)
+
     return app
 
 def blueprint_config(app):
@@ -35,14 +39,21 @@ def blueprint_config(app):
     app.register_blueprint(customer_account_blueprint, url_prefix='/customers_account')
     app.register_blueprint(product_blueprint, url_prefix='/products')
     app.register_blueprint(order_blueprint, url_prefix='/orders')
+    app.register_blueprint(swagger_blueprint, url_prefix=SWAGGER_URL)
 
-if __name__ == '__main__':
-    app = create_app('DevelopmentConfig')
+# if __name__ == '__main__':
+#     app = create_app('DevelopmentConfig')
 
-    blueprint_config(app)
+#     # blueprint_config(app)
 
-    with app.app_context():
-        # db.drop_all()
-        db.create_all()
+#     with app.app_context():
+#         # db.drop_all()
+#         db.create_all()
     
-    app.run()
+#     app.run()
+
+app = create_app('ProductionConfig')
+
+with app.app_context():
+    db.drop_all()
+    db.create_all()

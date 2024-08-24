@@ -34,6 +34,7 @@ jobs:
           echo "Contents of site-packages: $(ls -l venv/lib/python*/site-packages)"
 
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -56,3 +57,13 @@ jobs:
       
       - name: Run the tests
         run: python -m unittest discover -v
+  
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy the App
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: curl '$deploy_url'
