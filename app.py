@@ -27,7 +27,7 @@ def create_app(config_name):
     db.init_app(app)
     ma.init_app(app)
     cache.init_app(app)
-    
+    app.register_blueprint(swagger_blueprint, url_prefix=SWAGGER_URL)
     return app
 
 def blueprint_config(app):

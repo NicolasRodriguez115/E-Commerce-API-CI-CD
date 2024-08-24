@@ -50,7 +50,7 @@ class TestLoginCustomer(unittest.TestCase):
 
         response = self.app.post('/customers_account/login', json=payload)
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 401)
 
 class TestCustomer(unittest.TestCase):
 
